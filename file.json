@@ -1,0 +1,8 @@
+{
+  "wso2am": {
+    "java_extracted_path": "/opt"
+  },
+  "run_list": [
+    "recipe[chef-wso2apim]"
+  ]
+}
