@@ -37,13 +37,13 @@ Thereafter, we install the Chef client in another instance and configure both  c
 
 
 
-#####2.1.Install and configure Chef Server 
+##### 2.1.Install and configure Chef Server 
 We can install the Chef Server through this link 
 “https://learn.chef.io/modules/manage-a-node-chef-server/ubuntu/bring-your-own-system/set-up-your-chef-server#/ “
  
 When we install the Chef Server in an instance we have to create an organization and user. In this process you get RSA private key for the user. You need to save the USER.pem (chefadmin.pem) file into a seperate file for knife configuration process.
 
-#####2.2.Install and configure Chef workstation
+##### 2.2.Install and configure Chef workstation
 Chef-workstation can be  installed through Chef Development Kit (Chef DK) via  this link (https://downloads.chef.io/chefdk).
 
 Refer this link to the configuration part of workstation (https://docs.chef.io/workstation.html)[1].
@@ -117,7 +117,7 @@ When we made changes in cookbook we have to upload the cookbook again into the C
 
 
 
-#####2.3.How to install and configure Chef-client
+##### 2.3.How to install and configure Chef-client
 A bootstrap is a process that installs the Chef-client on a target system so that it can run as a Cchef-client and communicate with a Chef Server. There are two ways to do this:
 Use the knife bootstrap subcommand to bootstrap a node using the omnibus installer
 Use an unattended install to bootstrap a node from itself, without using SSH or WinRM
