@@ -1,3 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+  ~   Copyright:: 2018, The Authors, All Rights Reserved..
+  ~
+  ~  WSO2 Inc. licenses this file to you under the Apache License,
+  ~  Version 2.0 (the "License"); you may not use this file except
+  ~  in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing,
+  ~  software distributed under the License is distributed on an
+  ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~  KIND, either express or implied.  See the License for the
+  ~  specific language governing permissions and limitations
+  ~  under the License.
+  -->
 <APIManager>
     <!-- JNDI name of the data source to be used by the API publisher, API store and API
          key manager. This data source should be defined in the master-datasources.xml file
@@ -16,7 +34,7 @@
          logic relies on this. -->
     <AuthManager>
         <!-- Server URL of the Authentication service -->
-          <%- if (node["wso2am"]["product_profile"] == "publisher" and node["wso2am"]["apply_publisher_specific_configurations"] or node["wso2am"]["apply_store_specific_configurations"]) and
+          <%- if (node["wso2am"]["product_profile"] == "publisher" or node["wso2am"]["product_profile"] == "store" ) and
                         node["wso2am"]["apim_keymanager"]["host"] and node["wso2am"]["apim_keymanager"]["port"]-%>
                           <ServerURL>https://<%= node["wso2am"]["apim_keymanager"]["host"] %>:<%= node["wso2am"]["apim_keymanager"]["port"] %>/services/</ServerURL>
                         <%- else -%>
@@ -92,7 +110,7 @@
                 <Name>Production and Sandbox</Name>
                 <Description>This is a hybrid gateway that handles both production and sandbox token traffic.</Description>
                 <!-- Server URL of the API gateway -->
-                <%- if ((node["wso2am"]["product_profile"] == "keymanager" or node["wso2am"]["product_profile"] == "publisher")  and node["wso2am"]["apply_publisher_specific_configurations"] or node["wso2am"]["apply_store_specific_configurations"]) and
+                <%- if (node["wso2am"]["product_profile"] == "keymanager" or node["wso2am"]["product_profile"] == "publisher")  and
                         node["wso2am"]["api_gateway_environment"]["host"] and node["wso2am"]["api_gateway_environment"]["port"]-%>
                           <ServerURL>https://<%= node["wso2am"]["api_gateway_environment"]["host"] %>:<%= node["wso2am"]["api_gateway_environment"]["port"] %>/services/</ServerURL>
                         <%- else -%>
@@ -104,8 +122,8 @@
                 <!-- Admin password for the API gateway.-->
                 <Password>${admin.password}</Password>
                 <!-- Endpoint URLs for the APIs hosted in this API gateway.-->
-                <%- if (node["wso2am"]["product_profile"] == "publisher" and node["wso2am"]["apply_publisher_specific_configurations"] or node["wso2am"]["apply_store_specific_configurations"]) and node["wso2am"]["api_gateway_environment"]["api_endpoint_host"] and
-                          node["wso2am"]["api_gateway_environment"]["api_endpoint_port"] and  node["wso2am"]["api_gateway_environment"]["secure_api_endpoint_port"]-%>
+                <%- if (node["wso2am"]["product_profile"] == "publisher" or node["wso2am"]["product_profile"] == "store" ) and node["wso2am"]["api_gateway_environment"]["api_endpoint_host"] and
+                            node["wso2am"]["api_gateway_environment"]["secure_api_endpoint_port"]-%>
                           <GatewayEndpoint>http://<%= node["wso2am"]["api_gateway_environment"]["api_endpoint_host"] %>:<%= node["wso2am"]["api_gateway_environment"]["api_endpoint_port"] %>,https://<%= node["wso2am"]["api_gateway_environment"]["api_endpoint_host"] %>:<%= node["wso2am"]["api_gateway_environment"]["secure_api_endpoint_port"] %></GatewayEndpoint>
                         <%- else -%>
                           <GatewayEndpoint>http://${carbon.local.ip}:${http.nio.port},https://${carbon.local.ip}:${https.nio.port}</GatewayEndpoint>
@@ -234,22 +252,36 @@
              -ThriftServerHost - Allows to configure a hostname for the thrift server. It uses the carbon hostname by default.
 	         -The Gateway uses this parameter to connect to the key validation thrift service. -->
 	        <%- if node['wso2am']['product_profile'] == 'keymanager'  -%>
-	         <KeyValidatorClientType><%= node["wso2am"]["key_validator_client_type"] %></KeyValidatorClientType>
+	         <KeyValidatorClientType>ThriftClient</KeyValidatorClientType>
         <ThriftClientConnectionTimeOut>10000</ThriftClientConnectionTimeOut>
         <!--ThriftClientPort>10397</ThriftClientPort-->
 
-        <EnableThriftServer><%= node["wso2am"]["enable_thrift_server"] %></EnableThriftServer>
-        <ThriftServerHost><%= node["wso2am"]["thrift_server_host"] %></ThriftServerHost>
-        <%- else -%>
+        <EnableThriftServer>true</EnableThriftServer>
+        <ThriftServerHost>localhost</ThriftServerHost>
+        <%- else if node['wso2am']['product_profile'] == 'store'-%>
         <KeyValidatorClientType>ThriftClient</KeyValidatorClientType>
         <ThriftClientConnectionTimeOut>10000</ThriftClientConnectionTimeOut>
         <!--ThriftClientPort>10397</ThriftClientPort-->
-        <%- if node['wso2am']['product_profile'] == 'publisher'  -%>
         <EnableThriftServer>false</EnableThriftServer>
-        <% else %>
-         <EnableThriftServer>true</EnableThriftServer>
-         <% end %>
+
+        <ThriftServerHost><%= node["wso2am"]["apim_keymanager"]["host"] %></ThriftServerHost>
+        <%- else if node['wso2am']['product_profile'] == 'publisher'  -%>
+        <KeyValidatorClientType>ThriftClient</KeyValidatorClientType>
+        <ThriftClientConnectionTimeOut>10000</ThriftClientConnectionTimeOut>
+        <!--ThriftClientPort>10397</ThriftClientPort-->
+
+        <EnableThriftServer>false</EnableThriftServer>
+
         <ThriftServerHost>localhost</ThriftServerHost>
+        <% else %>
+        <KeyValidatorClientType>ThriftClient</KeyValidatorClientType>
+        <ThriftClientConnectionTimeOut>10000</ThriftClientConnectionTimeOut>
+        <!--ThriftClientPort>10397</ThriftClientPort-->
+
+        <EnableThriftServer>false</EnableThriftServer>
+        <ThriftServerHost>localhost</ThriftServerHost>
+         <%- end -%>
+         <%- end -%>
          <%- end -%>
         <!--ThriftServerPort>10397</ThriftServerPort-->
 
@@ -293,7 +325,14 @@
              In distributed deployment we should configure this property in key manager node by pointing
              gateway https( /http, we recommend users to use 'https' endpoints for security purpose) url.
              Also please note that we should point gateway revoke service to key manager -->
-        <RevokeAPIURL>https://localhost:${https.nio.port}/revoke</RevokeAPIURL>
+             <%- if node["wso2am"]["product_profile"] == "store"  and node["wso2am"]["api_gateway_environment"]["api_endpoint_host"] and
+                            node["wso2am"]["api_gateway_environment"]["secure_api_endpoint_port"]-%>
+
+        <RevokeAPIURL>https://<%= node["wso2am"]["api_gateway_environment"]["api_endpoint_host"] %>:<%= node["wso2am"]["api_gateway_environment"]["secure_api_endpoint_port"] %>/revoke</RevokeAPIURL>
+        <%- else -%>
+         <RevokeAPIURL>https://localhost:${https.nio.port}/revoke</RevokeAPIURL>
+        <%- end -%>
+
         <!-- Whether to encrypt tokens when storing in the Database
         Note: If changing this value to true, change the value of <TokenPersistenceProcessor> to
         org.wso2.carbon.identity.oauth.tokenprocessor.EncryptionDecryptionPersistenceProcessor in the identity.xml -->
@@ -630,7 +669,7 @@
             </DataPublisherThreadPool>
         </DataPublisher>
         <PolicyDeployer>
-            <%- if (node["wso2am"]["product_profile"] == "publisher" and node["wso2am"]["apply_publisher_specific_configurations"] or node["wso2am"]["apply_gateway_specific_configurations"])  and
+            <%- if (node["wso2am"]["product_profile"] == "publisher" )  and
         node["wso2am"]["apim_traffic_manager"]["host"] and node["wso2am"]["apim_traffic_manager"]["port"] -%>
             <ServiceURL>https://<%= node["wso2am"]["apim_traffic_manager"]["host"] %>:<%= node["wso2am"]["apim_traffic_manager"]["port"] %>/services/</ServiceURL>
         <%- else -%>

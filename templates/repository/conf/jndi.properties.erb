@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+# Copyright:: 2018, The Authors, All Rights Reserved..
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 #
 # register some connection factories
 # connectionfactory.[jndiname] = [ConnectionURL]
-<%- if node["wso2am"]["product_profile"] == "publisher" and node["wso2am"]["apply_publisher_specific_configurations"] and node["wso2am"]["apim_traffic_manager"]["jms_url_port"] -%>
+<%- if node["wso2am"]["product_profile"] == "publisher" and node["wso2am"]["apim_traffic_manager"]["jms_url_port"] -%>
 connectionfactory.TopicConnectionFactory=amqp://admin:admin@clientid/carbon?brokerlist='tcp://<%= node["wso2am"]["apim_traffic_manager"]["host"] %>:<%= node["wso2am"]["apim_traffic_manager"]["jms_url_port"] %>'
 topic.throttleData=throttleData
 <%- else -%>
@@ -28,3 +28,4 @@ connectionfactory.QueueConnectionFactory=amqp://admin:admin@clientID/test?broker
 # register some topics in JNDI using the form
 # topic.[jndiName] = [physicalName]
 topic.throttleData=throttleData
+
