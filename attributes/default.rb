@@ -1,7 +1,7 @@
 #  Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 #
 # WSO2 Inc. licenses this file to you under the Apache License,
-#                                                      Version 2.0 (the "License"); you may not use this file except
+#  Version 2.0 (the "License"); you may not use this file except
 # in compliance with the License.
 #      you may obtain a copy of the License at
 #   http://www.apache.org/licenses/LICENSE-2.0
@@ -10,8 +10,9 @@
 #      software distributed under the License is distributed on an
 #  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
 #  KIND, either express or implied. See the License for the
-#                                                       specific language governing permissions and limitations
-#                                                       under the License.
+# specific language governing permissions and limitations
+# under the License.
+
 
 default['wso2am']['java_home'] = '/opt/jdk1.8.0_121'
 default['wso2am']['mysql_address'] = 'localhost'
@@ -51,7 +52,7 @@ default['wso2am']['trust_store_location'] = 'repository/resources/security/clien
 default['wso2am']['trust_store_type'] = 'JKS'
 default['wso2am']['trust_store_password'] = 'wso2carbon'
 default['wso2am']['dep_sync_enabled'] = false
-default['wso2am']['product_profile'] = 'keymanager'
+default['wso2am']['product_profile'] = 'store'
 default['wso2am']['registry_mounts'] = 'true'
 default['wso2am']['wso2registry'] = 'wso2registry'
 default['wso2am']['dep_sync_enabled'] = 'false'
@@ -64,15 +65,15 @@ default['wso2am']['dep_sync_svn_password'] = 'xxxx'
 default['wso2am']['dep_sync_svn_append_tenant_id'] = 'true'
 default['wso2am']['user'] = 'wso2user'
 default['wso2am']['group'] = 'wso2user'
+default['wso2am']['user_shell'] = '/bin/sh'
 default['wso2am']['user_comment'] = 'WSO2 User'
-#enabling distributed setup
 default['wso2am']['distributed setup'] = 'true'
-#for mounting
+
 default["govregistry"] =
     {
         "name" => 'govregistry',
         "jndi_config" => 'jdbc/WSO2REG_DB',
-        "username" => 'mysql_username',
+        "username" => 'root',
         "url" => "jdbc:mysql://#{node['wso2am']['mysql_address']}:3306/regdb",
         "readOnly" => false,
         "enableCache" => true,
@@ -81,12 +82,11 @@ default["govregistry"] =
         "targetPath" => '/_system/governance'
 
     }
-
 default["configregistry"] =
     {
         "name" => 'configregistry',
         "jndi_config" => 'jdbc/WSO2_CONFIG_DB',
-        "username" => 'mysql_username',
+        "username" => 'root',
         "url" => "jdbc:mysql://#{node['wso2am']['mysql_address']}:3306/configdb",
         "readOnly" => false,
         "enableCache" => true,
@@ -95,14 +95,15 @@ default["configregistry"] =
         "targetPath" => '/_system/config'
 
     }
+
 default["master_datasources"] = {
     "wso2am_db" => {
         "name" => 'WSO2AM_DB',
         "description" => 'The datasource used for the API Manager database',
         "driver_class_name" => 'com.mysql.jdbc.Driver',
         "url" => "jdbc:mysql://#{node['wso2am']['mysql_address']}:3306/apimgtdb?autoReconnect=true",
-        "username" => 'mysql_username',
-        "password" => 'mysql_password',
+        "username" => 'root',
+        "password" => 'kirianna7',
         "jndi_config" => 'jdbc/WSO2AM_DB',
         "max_active" => '50',
         "max_wait" => '60000',
@@ -116,8 +117,8 @@ default["master_datasources"] = {
         "description" => 'The datasource used for message broker database',
         "driver_class_name" => 'com.mysql.jdbc.Driver',
         "url" => "jdbc:mysql://#{node['wso2am']['mysql_address']}:3306/mbstoredb?autoReconnect=true",
-        "username" => 'mysql_username',
-        "password" => 'mysql_password',
+        "username" => 'root',
+        "password" => 'kirianna7',
         "jndi_config" => 'WSO2MBStoreDB',
         "max_active" => '50',
         "max_wait" => '60000',
@@ -131,8 +132,8 @@ default["master_datasources"] = {
         "description" => 'The datasource used by user manager',
         "driver_class_name" => 'com.mysql.jdbc.Driver',
         "url" => "jdbc:mysql://#{node['wso2am']['mysql_address']}:3306/userdb?autoReconnect=true",
-        "username" => 'mysql_username',
-        "password" => 'mysql_password',
+        "username" => 'root',
+        "password" => 'kirianna7',
         "jndi_config" => 'jdbc/WSO2UM_DB',
         "max_active" => '50',
         "max_wait" => '60000',
@@ -146,8 +147,8 @@ default["master_datasources"] = {
         "description" => 'The datasource used by user manager',
         "driver_class_name" => 'com.mysql.jdbc.Driver',
         "url" => "jdbc:mysql://#{node['wso2am']['mysql_address']}:3306/regdb?autoReconnect=true",
-        "username" => 'mysql_username',
-        "password" => 'mysql_password',
+        "username" => 'root',
+        "password" => 'kirianna7',
         "jndi_config" => 'jdbc/WSO2REG_DB',
         "max_active" => '50',
         "max_wait" => '60000',
@@ -161,8 +162,8 @@ default["master_datasources"] = {
         "description" => 'The datasource used for getting statistics to API Manager',
         "driver_class_name" => 'com.mysql.jdbc.Driver',
         "url" => "jdbc:mysql://#{node['wso2am']['mysql_address']}:3306/statdb?autoReconnect=true",
-        "username" => 'mysql_username',
-        "password" => 'mysql_password',
+        "username" => 'root',
+        "password" => 'kirianna7',
         "jndi_config" => 'jdbc/WSO2AM_STATS_DB',
         "max_active" => '50',
         "max_wait" => '60000',
@@ -176,8 +177,8 @@ default["master_datasources"] = {
         "description" => 'The datasource used by user manager',
         "driver_class_name" => 'com.mysql.jdbc.Driver',
         "url" => "jdbc:mysql://#{node['wso2am']['mysql_address']}:3306/configdb?autoReconnect=true",
-        "username" => 'mysql_username',
-        "password" => 'mysql_password',
+        "username" => 'root',
+        "password" => 'kirianna7',
         "jndi_config" => 'jdbc/WSO2_CONFIG_DB',
         "max_active" => '50',
         "max_wait" => '60000',
@@ -193,13 +194,13 @@ default["clustering"] = {
     "enabled" => true,
     "membership_scheme" => 'wka',
     "domain" => 'wso2.as.domain',
-    "local_member_host" => '10.100.4.252',
+    "local_member_host" => "#{node['ipaddress']}",
     "local_member_port" => '4000',
     "sub_domain" => 'mgt',
     "wka" => {
         "members" => [{
 
-                          "hostname" => '10.100.4.252',
+                          "hostname" => "#{node['ipaddress']}",
                           "port" => 4000
                       }, {
 
@@ -207,7 +208,7 @@ default["clustering"] = {
                           "port" => 4000}]
     }
 }
-#connecting templates based on profiles
+
 default["wso2am"]["templates"] = {
     "default" => [
         {"path" => 'repository/conf/carbon.xml'},
@@ -247,11 +248,131 @@ default["wso2am"]["templates"] = {
         {"path" => 'repository/conf/api-manager.xml'}
 
 
+    ],
+    "traficmanager" => [
+        {"path" => 'repository/conf/carbon.xml'},
+        {"path" => 'repository/conf/datasources/master-datasources.xml'},
+        {"path" => 'repository/conf/user-mgt.xml'},
+        {"path" => 'repository/conf/api-manager.xml'}
+
+
+    ],
+    "gateway-manager" => [
+        {"path" => 'repository/conf/carbon.xml'},
+        {"path" => 'repository/conf/datasources/master-datasources.xml'},
+        {"path" => 'repository/conf/user-mgt.xml'},
+        {"path" => 'repository/conf/api-manager.xml'},
+        {"path" => 'repository/conf/axis2/axis2.xml'},
+        {"path" => 'repository/conf/registry.xml'}
+
+
+    ],
+    "gateway-worker" => [
+        {"path" => 'repository/conf/carbon.xml'},
+        {"path" => 'repository/conf/datasources/master-datasources.xml'},
+        {"path" => 'repository/conf/user-mgt.xml'},
+        {"path" => 'repository/conf/api-manager.xml'},
+        {"path" => 'repository/conf/axis2/axis2.xml'},
+        {"path" => 'repository/conf/registry.xml'}
+
+
     ]
 
 }
+#delete files path for different profiles
+default["wso2am"]["delete_files"] = {
 
-default["wso2am"]["WebSocketInboundEndpoint_path"] = "#{node['wso2am']['wso2api_extracted_path']}/#{node['wso2am']['product_name']}-#{node['wso2am']['product_version']}/repository/deployment/server/synapse-configs/default/inbound-endpoints/WebSocketInboundEndpoint.xml}"
+    "keymanager" => [
+        {"path" => 'repository/deployment/server/webapps/am#sample#calculator#v1.war'},
+        {"path" => 'repository/deployment/server/webapps/am#sample#pizzashack#v1.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#admin#v0.11.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#publisher#v0.11.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#store#v0.11.war'},
+        {"path" => 'repository/deployment/server/webapps/shindig.war'}
+
+    ],
+    "publisher" => [
+        {"path" => 'repository/deployment/server/webapps/am#sample#calculator#v1.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#admin#v0.11.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#store#v0.11.war'},
+        {"path" => 'repository/deployment/server/webapps/shindig.war'},
+        {"path" => 'repository/deployment/server/webapps/client-registration#v0.11.war'},
+        {"path" => 'repository/deployment/server/webapps/oauth2.war'},
+        {"path" => 'repository/deployment/server/webapps/throttle#data#v1.war'}
+
+
+    ],
+    "store" => [
+        {"path" => 'repository/deployment/server/webapps/am#sample#calculator#v1.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#admin#v0.11.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#publisher#v0.11.war'},
+        {"path" => 'repository/deployment/server/webapps/shindig.war'},
+        {"path" => 'repository/deployment/server/webapps/client-registration#v0.11.war'},
+        {"path" => 'repository/deployment/server/webapps/oauth2.war'},
+        {"path" => 'repository/deployment/server/webapps/throttle#data#v1.war'},
+        {"path" => 'repository/deployment/server/webapps/am#sample#pizzashack#v1.war'}
+
+    ],
+    "traficmanager" => [
+        {"path" => 'repository/deployment/server/webapps/am#sample#calculator#v1.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#admin#v0.11.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#publisher#v0.11.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#store#v0.11.war'},
+        {"path" => 'repository/deployment/server/webapps/client-registration#v0.11.war'},
+        {"path" => 'repository/deployment/server/webapps/oauth2.war'},
+        {"path" => 'repository/deployment/server/webapps/throttle#data#v1.war'},
+        {"path" => 'repository/deployment/server/webapps/am#sample#pizzashack#v1.war'},
+        {"path" => 'repository/deployment/server/webapps/authenticationendpoint.war'},
+        {"path" => 'repository/conf/axis2/axis2.xml'},
+        {"path" => 'repository/conf/registry.xml'}
+
+
+    ],
+    "gateway-manager" => [
+        {"path" => 'repository/deployment/server/webapps/am#sample#calculator#v1.war'},
+        {"path" => 'repository/deployment/server/webapps/shindig.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#publisher#v0.11.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#store#v0.11.war'},
+        {"path" => 'repository/deployment/server/webapps/client-registration#v0.11.war'},
+        {"path" => 'repository/deployment/server/webapps/oauth2.war'},
+        {"path" => 'repository/deployment/server/webapps/throttle#data#v1.war'}
+
+
+    ],
+    "gateway-worker" => [
+        {"path" => 'repository/deployment/server/webapps/am#sample#calculator#v1.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#admin#v0.11.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#publisher#v0.11.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#store#v0.11.war'},
+        {"path" => 'repository/deployment/server/webapps/client-registration#v0.11.war'},
+        {"path" => 'repository/deployment/server/webapps/oauth2.war'},
+        {"path" => 'repository/deployment/server/webapps/throttle#data#v1.war'},
+        {"path" => 'repository/deployment/server/webapps/am#sample#pizzashack#v1.war'}
+
+
+    ]
+
+}
+#jaggeryapps delete directory path
+default["wso2am"]["delete_directory"] = {
+
+    "traficmanager" => [
+        {"path" => 'repository/deployment/server/jaggeryapps/admin'},
+        {"path" => 'repository/deployment/server/jaggeryapps/portal'},
+        {"path" => 'repository/deployment/server/jaggeryapps/publisher'},
+        {"path" => 'repository/deployment/server/jaggeryapps/store'}
+    ]}
+
+default["wso2am"]["worker"] = 'false'
+default["wso2am"]["broker"] = 'repository/conf'
+default["wso2am"]["WebSocketInboundEndpoint_path"] = "#{node['wso2am']['wso2api_extracted_path']}/#{node['wso2am']['product_name']}-#{node['wso2am']['product_version']}/repository/deployment/server/synapse-configs/default/inbound-endpoints/WebSocketInboundEndpoint.xml"
+default["wso2am"]["axis2.xml_path"] = "#{node['wso2am']['wso2api_extracted_path']}/#{node['wso2am']['product_name']}-#{node['wso2am']['product_version']}/repository/conf/axis2"
+default["wso2am"]["registry.xml_path"] = "#{node['wso2am']['wso2api_extracted_path']}/#{node['wso2am']['product_name']}-#{node['wso2am']['product_version']}/repository/conf"
+default["wso2am"]["jaggeryapps_path"] = "#{node['wso2am']['wso2api_extracted_path']}/#{node['wso2am']['product_name']}-#{node['wso2am']['product_version']}/repository/deployment/server/jaggeryapps"
+default["wso2am"]["apply_publisher_specific_configurations"] = true
+default["wso2am"]["apply_store_specific_configurations"] = true
+default["wso2am"]["apply_gateway_specific_configurations"] = false
+default["wso2am"]["apply_gateway_specific_configurations"] = true
 default["wso2am"]["api_gateway_environment"]["host"] = 'mgt-gw.dev.wso2.org'
 default["wso2am"]["api_gateway_environment"]["port"] = '9444'
 default["wso2am"]["api_gateway_environment"]["api_endpoint_host"] = 'gw.dev.wso2.org'
@@ -263,8 +384,14 @@ default["wso2am"]["apim_traffic_manager"]["host"] = 'tm.dev.wso2.org'
 default["wso2am"]["apim_traffic_manager"]["port"] = '9444'
 default["wso2am"]["apim_traffic_manager"]["jms_url_port"] = '5672'
 default["wso2am"]["key_validator_client_type"] = 'ThriftClient'
+default["wso2am"]["enable_thrift_server"] = true
 default["wso2am"]["thrift_server_host"] = 'localhost'
+default["wso2am"]["enable_data_publisher"] = false
+default["wso2am"]["enable_block_condition"] = true
+default["wso2am"]["enable_jms_connection_details"] = true
 default["wso2am"]["disable_jms_event_parameters"] = false
 default["wso2am"]["apim_store"]["host"] = 'store.dev.wso2.org'
 default["wso2am"]["apim_store"]["port"] = '9444'
+default["wso2am"]["apim_traffic_manager"]["receiver_url_port"] = '9611'
+default["wso2am"]["apim_traffic_manager"]["auth_url_port"] = '9711'
 

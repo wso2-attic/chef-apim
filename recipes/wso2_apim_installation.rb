@@ -1,14 +1,7 @@
-#
-# Cookbook:: chef-wso2apim
-# Recipe:: wso2_apim_installation
-#
-# Copyright:: 2018, The Authors, All Rights Reserved.
-#
-#
 #  Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 #
 # WSO2 Inc. licenses this file to you under the Apache License,
-# Version 2.0 (the "License"); you may not use this file except
+#  Version 2.0 (the "License"); you may not use this file except
 # in compliance with the License.
 #      you may obtain a copy of the License at
 #   http://www.apache.org/licenses/LICENSE-2.0
@@ -19,6 +12,11 @@
 #  KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations
 # under the License.
+# Cookbook:: chef-wso2apim
+# Recipe:: wso2_apim_installation
+#
+# Copyright:: 2018, The Authors, All Rights Reserved.
+
 
 install_path = "#{node['wso2am']['wso2am_file_install_path']}"
 wso2api_extracted_path = node['wso2am']['wso2api_extracted_path']
@@ -26,8 +24,7 @@ product_name = node['wso2am']['product_name']
 product_version = node['wso2am']['product_version']
 wso2am_dir_name = "#{product_name}-#{product_version}"
 wso2am_dir = "#{wso2api_extracted_path}/#{wso2am_dir_name}"
-wso2am_bin_name = "#{wso2am_dir_name}/bin"
-bin_path = "#{wso2api_extracted_path}/#{wso2am_bin_name}"
+bin_path = "#{wso2api_extracted_path}/#{wso2am_dir_name}/bin"
 
 #copy file to cahe path from appache server
 remote_file "#{Chef::Config[:file_cache_path]}/#{wso2am_dir_name}.zip" do
@@ -48,14 +45,24 @@ bash "adding wso2 to #{wso2api_extracted_path}" do
   not_if {::File.exist?(wso2am_dir)}
 end
 
+
 #including the templates changes
 include_recipe 'chef-wso2apim::apply_template'
 
-#start the wso2-apim server
+#start the wso2-apim server different profile exclude trafic manager
 bash "start_wso2_server " do
   code <<-EOH
   	cd #{bin_path}
-	./wso2server.sh --start
+	./wso2server.sh start
   EOH
+  only_if {node['wso2am']['product_profile'] != 'traficmanager'}
 end
 
+#start the wso2-apim server for trafic manager
+bash "start_trafficmanagger_wso2_server " do
+  code <<-EOH
+  	cd #{bin_path}
+	./wso2server.sh -Dprofile=traffic-manager start
+  EOH
+  only_if {node['wso2am']['product_profile'] == 'traficmanager'}
+end

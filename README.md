@@ -15,25 +15,23 @@ This document contains instructions specific to ubuntu 16.04 .
 
 #### Instructions
 
- 1. Setup two instances
- 2. Setup Chef server, Chef client  and workstation and Perform the configurations part to run the product
-![alt text](https://github.com/tharmini/chef-apim-1/tree/master/image/Chef-server-devops-interview-questions.png)
+  1. Setup two instances
+     - It can be either two cloud instances or two physical computer instances or two local VM instances.
+ Set one of the above instances as Chef server as well as Chef workstation and other as Chef-client. You must be able to SSH between both the instances if bootstrapping the node from workstation.
+ 
+  2. Setup Chef server, Chef client  and workstation and Perform the configurations part to run the product
+     - First, we install the Chef Server and Chef workstation in one instance and do the configuration part for them. 
+ Thereafter, we install the Chef client in another instance and configure both  chef server and chef node and also we configuration of Chef workstation and Chef node is carried out if bootstrapping the node from workstation.
+ 
+ ![alt text](https://github.com/tharmini/chef-apim-1/tree/master/image/Chef-architexture.png)
 
-1.Setup two instances
-It can be either two cloud instances or two physical computer instances or two local VM instances.
-Set one of the above instances as Chef server as well as Chef workstation and other as Chef-client. You must be able to SSH between both the instances if bootstrapping the node from workstation.
-
-2.Setup Chef server, Chef client  and workstation and Perform the configurations part to run the product
-First, we install the Chef Server and Chef workstation in one instance and do the configuration part for them. 
-Thereafter, we install the Chef client in another instance and configure both  chef server and chef node and also we configuration of Chef workstation and Chef node is carried out if bootstrapping the node from workstation.
-
-#### **2.1.Install and configure Chef Server** 
+##### **2.1.Install and configure Chef Server** 
 We can install the Chef Server through this link 
 (https://learn.chef.io/modules/manage-a-node-chef-server/ubuntu/bring-your-own-system/set-up-your-chef-server#/)
  
 When we install the Chef Server in an instance we have to create an organization and user. In this process you get RSA private key for the user. You need to save the USER.pem (chefadmin.pem) file into a seperate file for knife configuration process.
 
-#### **2.2.Install and configure Chef workstation**
+##### **2.2.Install and configure Chef workstation**
 Chef-workstation can be  installed through Chef Development Kit (Chef DK) via  this link (https://downloads.chef.io/chefdk).
 Refer this link to the configuration part of workstation (https://docs.chef.io/workstation.html).
 When you go through the above  doc you will  find two ways to create the Chef-repo:
@@ -55,7 +53,7 @@ Now we can find the output as below:
     Uploading chef-wso2apim  [0.1.0]
     Uploaded 1 cookbook.
 
-### How to further edit the cookbook
+#### How to further edit the cookbook
 
  
 - If we want to create a recipe go to ~/chef-repo/cookbooks/chef-wso2apim/  directory and type the following command:
@@ -93,7 +91,7 @@ packs. If we want to change that version we need to store the newly version pack
 	
 When we made changes in cookbook we have to upload the cookbook again into the Chef Server through the previous command in step 3.
 	
-#### **2.3.How to install and configure Chef-client**
+##### **2.3.How to install and configure Chef-client**
 A bootstrap is a process that installs the Chef-client on a target system so that it can run as a Cchef-client and communicate with a Chef Server. There are two ways to do this:
 1. Use the knife bootstrap subcommand to bootstrap a node using the omnibus installer
 2. Use an unattended install to bootstrap a node from itself, without using SSH or WinRM
@@ -104,7 +102,7 @@ Through this method, the workstation bootstraps the node through SSH command and
 To do this we can be able to SSH with two instances .
 We can install the open-SSH server with the following commands
         
-        Sudo apt-get update
+        sudo apt-get update
         sudo apt-get install openssh-server
 
 
@@ -115,3 +113,4 @@ To SSH into the guest VM, first you have to set the forwarded port in VM.(https:
 In this way in our Chef-client instance we must install the chef client and do the configuration parts of it. Here the node doesn’t need to connect with the workstation only the chef server.
 To install Chef Client on a machine go to the URL (http://www.getchef.com/chef/install/). Select your Operating System, Version and Environment. It will show you the link to download the relevant package.
 On Linux you can install through the installer script.The script will download and install the latest version of Chef client on your machine. Follow this link to do the configurations  on Chef-client. (https://medium.com/@tharmini7/chef-client-2eab9a45f10d)
+

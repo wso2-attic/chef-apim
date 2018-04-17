@@ -1,9 +1,3 @@
-#
-# Cookbook:: chef-wso2apim
-# Recipe:: default
-#
-# Copyright:: 2018, The Authors, All Rights Reserved.
-
 #  Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 #
 # WSO2 Inc. licenses this file to you under the Apache License,
@@ -18,6 +12,12 @@
 #  KIND, either express or implied. See the License for the
 #                                                       specific language governing permissions and limitations
 #                                                       under the License.
+
+
+# Cookbook:: chef-wso2apim
+# Recipe:: default
+#
+# Copyright:: 2018, The Authors, All Rights Reserved.
 
 
 include_recipe 'chef-wso2apim::java_installation'

@@ -1,9 +1,3 @@
-#
-# Cookbook:: chef-wso2apim
-# Recipe:: java_installation
-#
-# Copyright:: 2018, The Authors, All Rights Reserved.
-
 #  Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 #
 # WSO2 Inc. licenses this file to you under the Apache License,
@@ -18,6 +12,9 @@
 #  KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations
 # under the License.
+# Cookbook:: chef-wso2apim
+# Recipe:: java_installation
+# Copyright:: 2018, The Authors, All Rights Reserved.
 
 
 install_path = node['wso2am']['java_file_install_path']
@@ -27,14 +24,17 @@ wso2am_group = node['wso2am']['group']
 extract_cache_path = node['wso2am']['java_extracted_path']
 java_home = node['wso2am']['java_home']
 
+java_home_path = "#{java_home}/bin"
 
-#creating  wso2am_group
+
+#creating new wso2am_group
 group "#{wso2am_group}" do
   action :create
   members #{wso2am_group}
   append true
 end
-#creating wso2am user
+
+#creating new wso2am user
 user "#{wso2am_user}" do
   action :create
   shell '/bin/bash'
@@ -53,7 +53,6 @@ remote_file "#{Chef::Config[:file_cache_path]}/#{java_zip_name}" do
   not_if {::File.exist?(install_path)}
 end
 
-
 #unzip java zip file and put into extracted_path
 bash "adding java to #{extract_cache_path}" do
   cwd Chef::Config[:file_cache_path]
@@ -70,6 +69,7 @@ bash 'env_test' do
   echo $JAVA_HOME
   EOH
 end
+
 #setting envirnmental variables in etc environment
 ruby_block 'set JAVA_HOME in /etc/environment' do
   block do
