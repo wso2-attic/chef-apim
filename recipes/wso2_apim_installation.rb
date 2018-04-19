@@ -20,11 +20,10 @@
 
 install_path = "#{node['wso2am']['wso2am_file_install_path']}"
 wso2api_extracted_path = node['wso2am']['wso2api_extracted_path']
-product_name = node['wso2am']['product_name']
-product_version = node['wso2am']['product_version']
-wso2am_dir_name = "#{product_name}-#{product_version}"
+wso2am_dir_name = "#{node['wso2am']['product_name']}-#{node['wso2am']['product_version']}"
 wso2am_dir = "#{wso2api_extracted_path}/#{wso2am_dir_name}"
 bin_path = "#{wso2api_extracted_path}/#{wso2am_dir_name}/bin"
+
 
 #copy file to cahe path from appache server
 remote_file "#{Chef::Config[:file_cache_path]}/#{wso2am_dir_name}.zip" do

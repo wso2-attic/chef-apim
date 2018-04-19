@@ -18,7 +18,7 @@ default['wso2am']['java_home'] = '/opt/jdk1.8.0_121'
 default['wso2am']['mysql_address'] = 'localhost'
 default['wso2am']['product_path'] = '/mnt'
 default['wso2am']['product_name'] = 'wso2am'
-default['wso2am']['product_version'] = '2.1.0'
+default['wso2am']['product_version'] = '2.2.0'
 default['wso2am']['server_ports_offset'] = "1"
 default['wso2am']['enable_secure_vault'] = false
 default['wso2am']['java_extracted_path'] = '/opt'
@@ -52,7 +52,7 @@ default['wso2am']['trust_store_location'] = 'repository/resources/security/clien
 default['wso2am']['trust_store_type'] = 'JKS'
 default['wso2am']['trust_store_password'] = 'wso2carbon'
 default['wso2am']['dep_sync_enabled'] = false
-default['wso2am']['product_profile'] = 'store'
+default['wso2am']['product_profile'] = 'publisher'
 default['wso2am']['registry_mounts'] = 'true'
 default['wso2am']['wso2registry'] = 'wso2registry'
 default['wso2am']['dep_sync_enabled'] = 'false'
@@ -73,7 +73,7 @@ default["govregistry"] =
     {
         "name" => 'govregistry',
         "jndi_config" => 'jdbc/WSO2REG_DB',
-        "username" => 'root',
+        "username" => 'database_username',
         "url" => "jdbc:mysql://#{node['wso2am']['mysql_address']}:3306/regdb",
         "readOnly" => false,
         "enableCache" => true,
@@ -86,7 +86,7 @@ default["configregistry"] =
     {
         "name" => 'configregistry',
         "jndi_config" => 'jdbc/WSO2_CONFIG_DB',
-        "username" => 'root',
+        "username" => 'database_username',
         "url" => "jdbc:mysql://#{node['wso2am']['mysql_address']}:3306/configdb",
         "readOnly" => false,
         "enableCache" => true,
@@ -102,8 +102,8 @@ default["master_datasources"] = {
         "description" => 'The datasource used for the API Manager database',
         "driver_class_name" => 'com.mysql.jdbc.Driver',
         "url" => "jdbc:mysql://#{node['wso2am']['mysql_address']}:3306/apimgtdb?autoReconnect=true",
-        "username" => 'root',
-        "password" => 'kirianna7',
+        "username" => 'database_username',
+        "password" => 'database_user',
         "jndi_config" => 'jdbc/WSO2AM_DB',
         "max_active" => '50',
         "max_wait" => '60000',
@@ -117,8 +117,8 @@ default["master_datasources"] = {
         "description" => 'The datasource used for message broker database',
         "driver_class_name" => 'com.mysql.jdbc.Driver',
         "url" => "jdbc:mysql://#{node['wso2am']['mysql_address']}:3306/mbstoredb?autoReconnect=true",
-        "username" => 'root',
-        "password" => 'kirianna7',
+        "username" => 'database_username',
+        "password" => 'database_user',
         "jndi_config" => 'WSO2MBStoreDB',
         "max_active" => '50',
         "max_wait" => '60000',
@@ -132,8 +132,8 @@ default["master_datasources"] = {
         "description" => 'The datasource used by user manager',
         "driver_class_name" => 'com.mysql.jdbc.Driver',
         "url" => "jdbc:mysql://#{node['wso2am']['mysql_address']}:3306/userdb?autoReconnect=true",
-        "username" => 'root',
-        "password" => 'kirianna7',
+        "username" => 'database_username',
+        "password" => 'database_user',
         "jndi_config" => 'jdbc/WSO2UM_DB',
         "max_active" => '50',
         "max_wait" => '60000',
@@ -147,8 +147,8 @@ default["master_datasources"] = {
         "description" => 'The datasource used by user manager',
         "driver_class_name" => 'com.mysql.jdbc.Driver',
         "url" => "jdbc:mysql://#{node['wso2am']['mysql_address']}:3306/regdb?autoReconnect=true",
-        "username" => 'root',
-        "password" => 'kirianna7',
+        "username" => 'database_username',
+        "password" => 'database_user',
         "jndi_config" => 'jdbc/WSO2REG_DB',
         "max_active" => '50',
         "max_wait" => '60000',
@@ -162,8 +162,8 @@ default["master_datasources"] = {
         "description" => 'The datasource used for getting statistics to API Manager',
         "driver_class_name" => 'com.mysql.jdbc.Driver',
         "url" => "jdbc:mysql://#{node['wso2am']['mysql_address']}:3306/statdb?autoReconnect=true",
-        "username" => 'root',
-        "password" => 'kirianna7',
+        "username" => 'database_username',
+        "password" => 'database_user',
         "jndi_config" => 'jdbc/WSO2AM_STATS_DB',
         "max_active" => '50',
         "max_wait" => '60000',
@@ -177,8 +177,8 @@ default["master_datasources"] = {
         "description" => 'The datasource used by user manager',
         "driver_class_name" => 'com.mysql.jdbc.Driver',
         "url" => "jdbc:mysql://#{node['wso2am']['mysql_address']}:3306/configdb?autoReconnect=true",
-        "username" => 'root',
-        "password" => 'kirianna7',
+        "username" => 'database_username',
+        "password" => 'database_user',
         "jndi_config" => 'jdbc/WSO2_CONFIG_DB',
         "max_active" => '50',
         "max_wait" => '60000',
@@ -200,7 +200,7 @@ default["clustering"] = {
     "wka" => {
         "members" => [{
 
-                          "hostname" => "#{node['ipaddress']}",
+                          "hostname" => '10.0.2.15',
                           "port" => 4000
                       }, {
 
@@ -215,7 +215,8 @@ default["wso2am"]["templates"] = {
         {"path" => 'repository/conf/axis2/axis2.xml'},
         {"path" => 'repository/conf/registry.xml'},
         {"path" => 'repository/conf/datasources/master-datasources.xml'},
-        {"path" => 'repository/conf/user-mgt.xml'}
+        {"path" => 'repository/conf/user-mgt.xml'},
+
 
     ],
     "keymanager" => [
@@ -285,20 +286,22 @@ default["wso2am"]["delete_files"] = {
     "keymanager" => [
         {"path" => 'repository/deployment/server/webapps/am#sample#calculator#v1.war'},
         {"path" => 'repository/deployment/server/webapps/am#sample#pizzashack#v1.war'},
-        {"path" => 'repository/deployment/server/webapps/api#am#admin#v0.11.war'},
-        {"path" => 'repository/deployment/server/webapps/api#am#publisher#v0.11.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#admin#v0.12.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#publisher#v0.12.war'},
         {"path" => 'repository/deployment/server/webapps/api#am#store#v0.11.war'},
-        {"path" => 'repository/deployment/server/webapps/shindig.war'}
+        {"path" => 'repository/deployment/server/webapps/micro-gateway#v0.9.war'},
+        {"path" => 'repository/deployment/server/webapps/api#identity#consent-mgt#v1.0.war'}
+
 
     ],
     "publisher" => [
         {"path" => 'repository/deployment/server/webapps/am#sample#calculator#v1.war'},
-        {"path" => 'repository/deployment/server/webapps/api#am#admin#v0.11.war'},
-        {"path" => 'repository/deployment/server/webapps/api#am#store#v0.11.war'},
-        {"path" => 'repository/deployment/server/webapps/shindig.war'},
-        {"path" => 'repository/deployment/server/webapps/client-registration#v0.11.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#admin#v0.12.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#store#v0.12.war'},
+        {"path" => 'repository/deployment/server/webapps/client-registration#v0.12.war'},
         {"path" => 'repository/deployment/server/webapps/oauth2.war'},
-        {"path" => 'repository/deployment/server/webapps/throttle#data#v1.war'}
+        {"path" => 'repository/deployment/server/webapps/throttle#data#v1.war'},
+        {"path" => 'repository/deployment/server/webapps/api#identity#consent-mgt#v1.0.war'}
 
 
     ],
@@ -306,48 +309,54 @@ default["wso2am"]["delete_files"] = {
         {"path" => 'repository/deployment/server/webapps/am#sample#calculator#v1.war'},
         {"path" => 'repository/deployment/server/webapps/api#am#admin#v0.11.war'},
         {"path" => 'repository/deployment/server/webapps/api#am#publisher#v0.11.war'},
-        {"path" => 'repository/deployment/server/webapps/shindig.war'},
-        {"path" => 'repository/deployment/server/webapps/client-registration#v0.11.war'},
-        {"path" => 'repository/deployment/server/webapps/oauth2.war'},
-        {"path" => 'repository/deployment/server/webapps/throttle#data#v1.war'},
-        {"path" => 'repository/deployment/server/webapps/am#sample#pizzashack#v1.war'}
-
-    ],
-    "traficmanager" => [
-        {"path" => 'repository/deployment/server/webapps/am#sample#calculator#v1.war'},
-        {"path" => 'repository/deployment/server/webapps/api#am#admin#v0.11.war'},
-        {"path" => 'repository/deployment/server/webapps/api#am#publisher#v0.11.war'},
-        {"path" => 'repository/deployment/server/webapps/api#am#store#v0.11.war'},
+        {"path" => 'repository/deployment/server/webapps/micro-gateway#v0.9.war'},
         {"path" => 'repository/deployment/server/webapps/client-registration#v0.11.war'},
         {"path" => 'repository/deployment/server/webapps/oauth2.war'},
         {"path" => 'repository/deployment/server/webapps/throttle#data#v1.war'},
         {"path" => 'repository/deployment/server/webapps/am#sample#pizzashack#v1.war'},
+        {"path" => 'repository/deployment/server/webapps/api#identity#consent-mgt#v1.0.war'}
+
+    ],
+    "traficmanager" => [
+        {"path" => 'repository/deployment/server/webapps/am#sample#calculator#v1.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#admin#v0.12.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#publisher#v0.12.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#store#v0.12.war'},
+        {"path" => 'repository/deployment/server/webapps/client-registration#v0.12.war'},
+        {"path" => 'repository/deployment/server/webapps/oauth2.war'},
+        {"path" => 'repository/deployment/server/webapps/micro-gateway#v0.9.war'},
+        {"path" => 'repository/deployment/server/webapps/throttle#data#v1.war'},
+        {"path" => 'repository/deployment/server/webapps/am#sample#pizzashack#v1.war'},
         {"path" => 'repository/deployment/server/webapps/authenticationendpoint.war'},
         {"path" => 'repository/conf/axis2/axis2.xml'},
-        {"path" => 'repository/conf/registry.xml'}
+        {"path" => 'repository/conf/registry.xml'},
+        {"path" => 'repository/deployment/server/webapps/api#identity#consent-mgt#v1.0.war'}
 
 
     ],
     "gateway-manager" => [
         {"path" => 'repository/deployment/server/webapps/am#sample#calculator#v1.war'},
-        {"path" => 'repository/deployment/server/webapps/shindig.war'},
-        {"path" => 'repository/deployment/server/webapps/api#am#publisher#v0.11.war'},
-        {"path" => 'repository/deployment/server/webapps/api#am#store#v0.11.war'},
-        {"path" => 'repository/deployment/server/webapps/client-registration#v0.11.war'},
+        {"path" => 'repository/deployment/server/webapps/micro-gateway#v0.9.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#publisher#v0.12.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#store#v0.12.war'},
+        {"path" => 'repository/deployment/server/webapps/client-registration#v0.12.war'},
         {"path" => 'repository/deployment/server/webapps/oauth2.war'},
-        {"path" => 'repository/deployment/server/webapps/throttle#data#v1.war'}
+        {"path" => 'repository/deployment/server/webapps/throttle#data#v1.war'},
+        {"path" => 'repository/deployment/server/webapps/api#identity#consent-mgt#v1.0.war'}
 
 
     ],
     "gateway-worker" => [
         {"path" => 'repository/deployment/server/webapps/am#sample#calculator#v1.war'},
-        {"path" => 'repository/deployment/server/webapps/api#am#admin#v0.11.war'},
-        {"path" => 'repository/deployment/server/webapps/api#am#publisher#v0.11.war'},
-        {"path" => 'repository/deployment/server/webapps/api#am#store#v0.11.war'},
-        {"path" => 'repository/deployment/server/webapps/client-registration#v0.11.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#admin#v0.12.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#publisher#v0.12.war'},
+        {"path" => 'repository/deployment/server/webapps/api#am#store#v0.12.war'},
+        {"path" => 'repository/deployment/server/webapps/client-registration#v0.12.war'},
         {"path" => 'repository/deployment/server/webapps/oauth2.war'},
+        {"path" => 'repository/deployment/server/webapps/micro-gateway#v0.9.war'},
         {"path" => 'repository/deployment/server/webapps/throttle#data#v1.war'},
-        {"path" => 'repository/deployment/server/webapps/am#sample#pizzashack#v1.war'}
+        {"path" => 'repository/deployment/server/webapps/am#sample#pizzashack#v1.war'},
+        {"path" => 'repository/deployment/server/webapps/api#identity#consent-mgt#v1.0.war'}
 
 
     ]

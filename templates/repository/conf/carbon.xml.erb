@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!--
- Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@
     <!--
        Product Version
     -->
-    <Version>2.1.0</Version>
+    <Version>2.2.0</Version>
 
     <!--
        Host name or IP address of the machine hosting this server
@@ -49,25 +49,19 @@
        This is will become part of the End Point Reference of the
        services deployed on this server instance.
     -->
-    <% if node["wso2am"]["hostname"] %>
+<% if node["wso2am"]["hostname"] %>
     <HostName><%= node["wso2am"]["hostname"] %></HostName>
 	<%- else -%>
     <!-- HostName>www.wso2.org</HostName-->
 	<% end %>
 
 
-
-
+    <!--HostName>www.wso2.org</HostName-->
 
     <!--
     Host name to be used for the Carbon management console
     -->
-    <% if node["wso2am"]["server_ports_offset"] %>
-    <MgtHostName><%= node["wso2am"]["mgt_hostname"] %></MgtHostName>
-	<%- else -%>
-    <!-- MgtHostName>mgt.wso2.org</MgtHostName-->
-	<% end %>
-
+    <!--MgtHostName>mgt.wso2.org</MgtHostName-->
 
     <!--
         The URL of the back end server. This is where the admin services are hosted and
@@ -142,7 +136,7 @@
          the define value + Offset.
          e.g. Offset=2 and HTTPS port=9443 will set the effective HTTPS port to 9445
          -->
-        <Offset><%= node["wso2am"]["server_ports_offset"] %></Offset>
+       <Offset><%= node["wso2am"]["server_ports_offset"] %></Offset>
 
         <!-- The JMX Ports -->
         <JMX>
@@ -377,7 +371,8 @@
             KeyStore which will be used for encrypting/decrypting passwords
             and other sensitive information.
         -->
-        <KeyStore>
+
+ 	<KeyStore>
             <!-- Keystore file location-->
             <Location>${carbon.home}/<%= node["wso2am"]["key_store_location"] %></Location>
             <!-- Keystore type (JKS/PKCS12 etc.)-->
@@ -397,22 +392,6 @@
             <KeyPassword><%= node["wso2am"]["key_store_key_password"] %></KeyPassword>
             <% end %>
         </KeyStore>
-
-		 <!--
-			Encrypt Decrypt Store will be used for encrypting and decrypting
-		-->
-        <RegistryKeyStore>
-            <!-- Keystore file location-->
-            <Location>${carbon.home}/<%= node["wso2am"]["registry_key_store_location"] %></Location>
-            <!-- Keystore type (JKS/PKCS12 etc.)-->
-            <Type><%= node["wso2am"]["registry_key_store_type"] %></Type>
-            <!-- Keystore password-->
-            <Password><%= node["wso2am"]["registry_key_store_password"] %></Password>
-            <!-- Private Key alias-->
-            <KeyAlias><%= node["wso2am"]["registry_key_store_key_alias"] %></KeyAlias>
-            <!-- Private Key password-->
-            <KeyPassword><%= node["wso2am"]["registry_key_store_key_password"] %></KeyPassword>
-        </RegistryKeyStore>
 
         <!--
             System wide trust-store which is used to maintain the certificates of all
@@ -490,12 +469,12 @@
         </XSSPreventionConfig>
     </Security>
 
-    <!--Hide unnecessary menu Items-->
-    <HideMenuItemIds>
-        <HideMenuItemId>claim_mgt_menu</HideMenuItemId>
-        <HideMenuItemId>identity_mgt_emailtemplate_menu</HideMenuItemId>
-        <HideMenuItemId>identity_security_questions_menu</HideMenuItemId>
-    </HideMenuItemIds>
+ <!--Hide unnecessary menu Items-->
+ <HideMenuItemIds>
+ <HideMenuItemId>claim_mgt_menu</HideMenuItemId>
+ <HideMenuItemId>identity_mgt_emailtemplate_menu</HideMenuItemId>
+ <HideMenuItemId>identity_security_questions_menu</HideMenuItemId>
+ </HideMenuItemIds>
 
     <!--
        The temporary work directory
@@ -616,22 +595,7 @@
 	In master nodes you need to set both AutoCommit and AutoCheckout to true
 	and in  worker nodes set only AutoCheckout to true.
     -->
-    <DeploymentSynchronizer>
-        <Enabled>false</Enabled>
-        <AutoCommit>false</AutoCommit>
-        <AutoCheckout>true</AutoCheckout>
-        <RepositoryType>svn</RepositoryType>
-        <SvnUrl>http://svnrepo.example.com/repos/</SvnUrl>
-        <SvnUser>username</SvnUser>
-        <SvnPassword>password</SvnPassword>
-        <SvnUrlAppendTenantId>true</SvnUrlAppendTenantId>
-    </DeploymentSynchronizer>
-
-    <!-- Deployment Synchronizer Configuration. Uncomment the following section when running with "registry based" dep sync.
-        In master nodes you need to set both AutoCommit and AutoCheckout to true
-        and in  worker nodes set only AutoCheckout to true.
-    -->
-    <% if node["wso2am"]["dep_sync_enabled"]=='true' %>
+   <% if node["wso2am"]["dep_sync_enabled"]=='true' %>
     <DeploymentSynchronizer>
         <Enabled>true</Enabled>
         <AutoCommit><%=  node["wso2am"]["dep_sync_auto_commit"]%></AutoCommit>
@@ -656,11 +620,6 @@
         <SvnUrlAppendTenantId>true</SvnUrlAppendTenantId>
     </DeploymentSynchronizer>
 <%- end -%>
-    <!--<DeploymentSynchronizer>
-        <Enabled>true</Enabled>
-        <AutoCommit>false</AutoCommit>
-        <AutoCheckout>true</AutoCheckout>
-    </DeploymentSynchronizer>-->
 
     <!-- Mediation persistence configurations. Only valid if mediation features are available i.e. ESB -->
     <!--<MediationConfig>

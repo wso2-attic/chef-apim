@@ -81,3 +81,4 @@ ruby_block 'set JAVA_HOME in /etc/environment' do
   only_if {node['wso2am']['set_etc_environment']}
 end
 
+
