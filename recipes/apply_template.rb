@@ -14,8 +14,8 @@
 # under the License.
 # Cookbook:: chef-wso2apim
 # Recipe:: apply_template
-#
-# Copyright:: 2018, The Authors, All Rights Reserved.
+# # Copyright:: 2018, The Authors, All Rights Reserved.
+
 
 wso2am_dir_name = "#{node['wso2am']['product_name']}-#{node['wso2am']['product_version']}"
 bin_path = "#{node['wso2am']['wso2api_extracted_path']}/#{wso2am_dir_name}/bin"
@@ -60,8 +60,6 @@ if node["wso2am"]["product_profile"] == "keymanager"
       group node["wso2am"]["group"]
       mode 0644
       action :delete
-      notifies :run, 'execute[wso2amservice_stop]', :delayed
-      notifies :run, 'execute[wso2amservice_start]', :delayed
 
     end
 
@@ -90,8 +88,7 @@ if node["wso2am"]["product_profile"] == "publisher"
       group node["wso2am"]["group"]
       mode 0644
       action :delete
-      notifies :run, 'execute[wso2amservice_stop]', :delayed
-      notifies :run, 'execute[wso2amservice_start]', :delayed
+
 
     end
   end
@@ -108,8 +105,8 @@ if node["wso2am"]["product_profile"] == "traficmanager"
 
       variables(
       )
-      notifies :run, 'execute[wso2amservice_stop]', :delayed
-      notifies :run, 'execute[wso2amservice_start]', :delayed
+      notifies :run, 'execute[wso2amservice2_stop]', :delayed
+      notifies :run, 'execute[wso2amservice2_start]', :delayed
 
     end
   end
@@ -119,8 +116,7 @@ if node["wso2am"]["product_profile"] == "traficmanager"
       group node["wso2am"]["group"]
       mode 0644
       action :delete
-      notifies :run, 'execute[wso2amservice_stop]', :delayed
-      notifies :run, 'execute[wso2amservice_start]', :delayed
+
 
     end
   end
@@ -131,8 +127,7 @@ if node["wso2am"]["product_profile"] == "traficmanager"
       mode 0644
       recursive true
       action :delete
-      notifies :run, 'execute[wso2amservice_stop]', :delayed
-      notifies :run, 'execute[wso2amservice_start]', :delayed
+
 
     end
   end
@@ -165,8 +160,7 @@ if node["wso2am"]["product_profile"] == "store"
       mode 0644
       action :delete
 
-      notifies :run, 'execute[wso2amservice_stop]', :delayed
-      notifies :run, 'execute[wso2amservice_start]', :delayed
+
     end
 
 
@@ -197,8 +191,6 @@ if node["wso2am"]["product_profile"] == "gateway-manager"
       group node["wso2am"]["group"]
       mode 0644
       action :delete
-      notifies :run, 'execute[wso2amservice_stop]', :delayed
-      notifies :run, 'execute[wso2amservice_start]', :delayed
 
 
     end
@@ -230,8 +222,7 @@ if node["wso2am"]["product_profile"] == "gateway-worker"
       group node["wso2am"]["group"]
       mode 0644
       action :delete
-      notifies :run, 'execute[wso2amservice_stop]', :delayed
-      notifies :run, 'execute[wso2amservice_start]', :delayed
+
     end
 
   end
@@ -244,8 +235,6 @@ file "#{node["wso2am"]["WebSocketInboundEndpoint_path"]}" do
   group node["wso2am"]["group"]
   mode 0644
   action :delete
-  notifies :run, 'execute[wso2amservice_stop]', :delayed
-  notifies :run, 'execute[wso2amservice_start]', :delayed
   only_if {node['wso2am']['product_profile'] == 'gateway-manager' || node['wso2am']['product_profile'] == 'gateway-worker'}
 end
 
@@ -254,8 +243,6 @@ bash "copy registry file" do
   code <<-EOL
   cp "#{node["wso2am"]["registry.xml_path"]}/registry_TM.xml" "#{node["wso2am"]["registry.xml_path"]}/registry.xml"
   EOL
-  notifies :run, 'execute[wso2amservice_stop]', :delayed
-  notifies :run, 'execute[wso2amservice_start]', :delayed
   only_if {node['wso2am']['product_profile'] == 'traficmanager'}
 end
 
@@ -264,8 +251,6 @@ bash "copy axis2_TM.xml to axix2 file" do
   code <<-EOL
   cp "#{node["wso2am"]["axis2.xml_path"]}/axis2_TM.xml" "#{node["wso2am"]["axis2.xml_path"]}/axis2.xml"
   EOL
-  notifies :run, 'execute[wso2amservice_stop]', :delayed
-  notifies :run, 'execute[wso2amservice_start]', :delayed
   only_if {node['wso2am']['product_profile'] == 'traficmanager'}
 end
 
@@ -286,7 +271,7 @@ execute 'wso2amservice_start' do
 end
 
 #stop wso2am server if there any configuration changes for profile trafic manager
-execute 'wso2amservice_start' do
+execute 'wso2amservice2_stop' do
   command './wso2server.sh -Dprofile=traffic-manager stop'
   cwd "#{bin_path}"
   action :nothing
@@ -294,10 +279,9 @@ execute 'wso2amservice_start' do
 end
 
 #start wso2am server if there any configuration changes for profile  trafic manager
-execute 'wso2amservice_start' do
+execute 'wso2amservice2_start' do
   command './wso2server.sh -Dprofile=traffic-manager start'
   cwd "#{bin_path}"
   action :nothing
   only_if {node['wso2am']['product_profile'] == 'traficmanager'}
 end
-

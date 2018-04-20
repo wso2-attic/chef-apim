@@ -1,8 +1,31 @@
-## WSO2 API Manager 2.1.0 Chef Cookbook
+## WSO2 API Manager 2.2.0 
+## Chef Cookbook
 
-Chef is a powerful automation platform that transforms infrastructure into code.The Chef Server acts as a hub for configuration data. The Chef Server stores cookbooks, the policies that are applied to nodes, and metadata that describes each registered node that is being managed by Chef.
+Chef is a powerful automation platform that transforms infrastructure into code.The Chef Server acts as a hub for configuration data. The Chef Server stores cookbooks, the policies that are applied to nodes, and metadata that describes each registered node that is being managed by Chef. 
 
-The  Chef cookbook includes the installation and some  configurations for distributed setup with different profiles such as  distributed database configuration, enable clustering, standalone h2 database configurations, API manager configuration, axis2 configuration,registry configuration, user_manager configurations for WSO2 API manager.
+Many organizations, in distributing nodes between multiple servers,  encounter the challenge of how to do configurations that are consistently deployed. It is easy if it is to manage one to ten servers manually but it is difficult when managing several servers. There the role of Chef comes into play. With Chef, we are able to manage servers, whether it is 5 or 5,000 of them– by turning our infrastructure into code. Time-consuming activities such as manual patching, configuration updates and service installations for every server will no longer exist. Apart from those, our Infrastructure becomes flexible, version-able, human-readable, and testable.
+
+Here the  Chef cookbook includes the installation and  configurations for distributed setup with different profiles such as  distributed database configuration, enable clustering, standalone h2 database configurations, API manager configuration, axis2 configuration,registry confi, user management configurations for WSO2 API manager.
+![alt text](https://github.com/tharmini/chef-apim-1/tree/master/image/arcitecture.png)
+
+**An Overview of Chef Components**
+The Chef process consists of three core components that interact with one another: Chef server, actual servers called nodes, and Chef workstation.Here is a short summary of main parts of Chef architecture:
+
+- **Chef Server**: Centralized server that holds all of your nodes' configuration. It can be self-hosted or hosted by Chef (the company).
+- **Node**: Hosts to which recipes and roles are applied during Chef client run. The primary features of a node are its - attributes and run list.
+- **Cookbooks**: Contain all resources and instructions that you need to configure your nodes. These can be reused across different run lists. Cookbooks typically consist of many recipes.
+- **Recipe**: The fundamental part of Chef, it is a collection of resources that are executed in the order to configure a node.
+- **Resource**: A cross platform abstraction of configurable parts of a node. For example these could be users, packages, files or directories.
+- **Attributes** - Represent node settings, for example hostname, versions of programming languages to install, database server etc.
+- **Data bags**: Contain globally available data used by nodes and roles.
+- **Chef Client**: Does all work on behalf of a node, where it executes recipes to configure and install software.
+- **Chef Repository**: The place where cookbooks, roles, configuration files, and other artifacts live.
+- **Chef Solo**: A command line tool that allows you to run Chef cookbooks without an actual Chef server. It is an open source version of the Chef client.
+- **Knife**: A tool used by engineers to upload configuration changes to the Chef server.
+- **Ohai**: A tool for collecting data about your operating system, used to provide system attributes used by Chef client during Chef run.
+- **Role**: A way to group similar features of nodes, for easier management.
+For more deatails (https://docs.chef.io/chef_overview.html)
+
 
 ### How to Contribute
 
@@ -16,8 +39,9 @@ This document contains instructions specific to ubuntu 16.04 .
 #### Instructions
 
   1. Setup two instances
-     - It can be either two cloud instances or two physical computer instances or two local VM instances.
- Set one of the above instances as Chef server as well as Chef workstation and other as Chef-client. You must be able to SSH between both the instances if bootstrapping the node from workstation.
+     - Chef workstation and Chef server can be a one instance because Chef workstation is accessing the Chef server(uploading cookbooks to the server by workstation).you can also use separate  instances to Chef server and  Chef workstation.But it is better when we use same instance for both because user.pem file and validation.pem file save on Chef-server instance.
+       Set one  instances as Chef server as well as Chef workstation and other as Chef-client. You must be able to SSH between both the instances if bootstrapping the node from workstation.A bootstrap is a process that installs the chef-client on a target system so that it can run as a chef-client and communicate with a Chef server. Bootstraping through SSH is might not be possible in more than half of the cases, for security reasons.so we directly bootstraping the node  with chef server through the validation.pem file by downloading chef-client in node.
+            ![alt text](https://github.com/tharmini/chef-apim-1/tree/master/image/instance.png)
  
   2. Setup Chef server, Chef client  and workstation and Perform the configurations part to run the product
      - First, we install the Chef Server and Chef workstation in one instance and do the configuration part for them. 
@@ -86,13 +110,13 @@ We have to add the source  and destination path  into default["templates"] in de
    Now the newly created COOKBOOK is included inside the cookbooks folder.
 
 - If we want to upload files which are below  250mb size, we can directly insert that file into ~/chef-repo/cookbooks/chef-wso2apim/files/ directory. But if the file size is above the 250mb we want to put that file into an external server. We have to change the external server link in attributes file.
-In the above cookbook the external server store the wso2am-2.1.0 and jdk1.8.0_121
+In the above cookbook the external server store the wso2am-2.2.0 and jdk1.8.0_121
 packs. If we want to change that version we need to store the newly version packs in external   server and change the  default attribute default['wso2am']['java_file_cache_path'] , default['wso2am']['wso2am_file_cache_path'] and the default['wso2am']['product_version'].
 	
 When we made changes in cookbook we have to upload the cookbook again into the Chef Server through the previous command in step 3.
 	
 ##### **2.3.How to install and configure Chef-client**
-A bootstrap is a process that installs the Chef-client on a target system so that it can run as a Cchef-client and communicate with a Chef Server. There are two ways to do this:
+A bootstrap is a process that installs the Chef-client on a target system so that it can run as a Chef-client and communicate with a Chef Server. There are two ways to do this:
 1. Use the knife bootstrap subcommand to bootstrap a node using the omnibus installer
 2. Use an unattended install to bootstrap a node from itself, without using SSH or WinRM
 
@@ -110,7 +134,20 @@ To SSH into the guest VM, first you have to set the forwarded port in VM.(https:
 
 **2.3.2.Use an unattended install to bootstrap a node from itself, without using SSH or WinR**
 
-In this way in our Chef-client instance we must install the chef client and do the configuration parts of it. Here the node doesn’t need to connect with the workstation only the chef server.
-To install Chef Client on a machine go to the URL (http://www.getchef.com/chef/install/). Select your Operating System, Version and Environment. It will show you the link to download the relevant package.
-On Linux you can install through the installer script.The script will download and install the latest version of Chef client on your machine. Follow this link to do the configurations  on Chef-client. (https://medium.com/@tharmini7/chef-client-2eab9a45f10d)
+In this way in our Chef-client instance we must install the Chef client and do the configuration parts of it. Here the node doesn’t need to connect with the workstation only the chef server.To install Chef Client on a machine go to the URL (http://www.getchef.com/chef/install/). Select your Operating System, Version and Environment. It will show you the link to download the relevant package.On Linux you can install through the installer script.The script will download and install the latest version of Chef client on your machine. 
 
+Follow this link to do the configurations  on Chef-client. (https://medium.com/@tharmini7/chef-client-2eab9a45f10d)
+NOTE:
+In WSO2-APIM 2.2.0, for deployment purpose database connection need with the host system.So before running the cookbook first connect the node instance with host system database.
+In the host system open the terminal and type the following command:
+            
+        Mysql -u root -p;
+        ALTER USER ‘username’@’%’ IDENTIFIED BY ‘password’;
+        Flush privileges;
+        grant all on *.* to ‘root’@’%’;
+        Flush privileges;
+In the node instance type the following command to check is the database connected or not
+        
+        mysql -h ' IPPADDRESS_OF_HOST' -u 'MYSQL_USERNAME' -P 'MYSQL_PASSWORD'
+        
+        

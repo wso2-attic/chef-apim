@@ -30,6 +30,7 @@ default['wso2am']['wso2am_file_install_path'] = "~/Downloads/wso2apii/#{node['ws
 #apache server path for wso2am
 default['wso2am']['wso2am_file_cache_path'] = "http://10.100.4.252:8090/api/#{node['wso2am']['product_name']}-#{node['wso2am']['product_version']}.zip"
 default['wso2am']['wso2api_extracted_path'] = '/mnt'
+
 #do java environment setup change
 default['wso2am']['set_etc_environment'] = true
 default['wso2am']['product_install_dir'] = "/home/tharmini/Downloads/#{node['wso2am']['product_name']}"
@@ -52,7 +53,7 @@ default['wso2am']['trust_store_location'] = 'repository/resources/security/clien
 default['wso2am']['trust_store_type'] = 'JKS'
 default['wso2am']['trust_store_password'] = 'wso2carbon'
 default['wso2am']['dep_sync_enabled'] = false
-default['wso2am']['product_profile'] = 'publisher'
+default['wso2am']['product_profile'] = 'traficmanager'
 default['wso2am']['registry_mounts'] = 'true'
 default['wso2am']['wso2registry'] = 'wso2registry'
 default['wso2am']['dep_sync_enabled'] = 'false'
@@ -68,12 +69,14 @@ default['wso2am']['group'] = 'wso2user'
 default['wso2am']['user_shell'] = '/bin/sh'
 default['wso2am']['user_comment'] = 'WSO2 User'
 default['wso2am']['distributed setup'] = 'true'
+default['wso2am']['database_username'] = 'username'
+default['wso2am']['database_password'] = 'password'
 
 default["govregistry"] =
     {
         "name" => 'govregistry',
         "jndi_config" => 'jdbc/WSO2REG_DB',
-        "username" => 'database_username',
+        "username" => "#{node['wso2am']['database_username']}",
         "url" => "jdbc:mysql://#{node['wso2am']['mysql_address']}:3306/regdb",
         "readOnly" => false,
         "enableCache" => true,
@@ -86,7 +89,7 @@ default["configregistry"] =
     {
         "name" => 'configregistry',
         "jndi_config" => 'jdbc/WSO2_CONFIG_DB',
-        "username" => 'database_username',
+        "username" => "#{node['wso2am']['database_username']}",
         "url" => "jdbc:mysql://#{node['wso2am']['mysql_address']}:3306/configdb",
         "readOnly" => false,
         "enableCache" => true,
@@ -102,8 +105,8 @@ default["master_datasources"] = {
         "description" => 'The datasource used for the API Manager database',
         "driver_class_name" => 'com.mysql.jdbc.Driver',
         "url" => "jdbc:mysql://#{node['wso2am']['mysql_address']}:3306/apimgtdb?autoReconnect=true",
-        "username" => 'database_username',
-        "password" => 'database_user',
+        "username" => "#{node['wso2am']['database_username']}",
+        "password" => "#{default['wso2am']['database_password']}",
         "jndi_config" => 'jdbc/WSO2AM_DB',
         "max_active" => '50',
         "max_wait" => '60000',
@@ -117,8 +120,8 @@ default["master_datasources"] = {
         "description" => 'The datasource used for message broker database',
         "driver_class_name" => 'com.mysql.jdbc.Driver',
         "url" => "jdbc:mysql://#{node['wso2am']['mysql_address']}:3306/mbstoredb?autoReconnect=true",
-        "username" => 'database_username',
-        "password" => 'database_user',
+        "username" => "#{node['wso2am']['database_username']}",
+        "password" => "#{node['wso2am']['database_password']}",
         "jndi_config" => 'WSO2MBStoreDB',
         "max_active" => '50',
         "max_wait" => '60000',
@@ -132,8 +135,8 @@ default["master_datasources"] = {
         "description" => 'The datasource used by user manager',
         "driver_class_name" => 'com.mysql.jdbc.Driver',
         "url" => "jdbc:mysql://#{node['wso2am']['mysql_address']}:3306/userdb?autoReconnect=true",
-        "username" => 'database_username',
-        "password" => 'database_user',
+        "username" => "#{node['wso2am']['database_username']}",
+        "password" => "#{node['wso2am']['database_password']}",
         "jndi_config" => 'jdbc/WSO2UM_DB',
         "max_active" => '50',
         "max_wait" => '60000',
@@ -147,8 +150,8 @@ default["master_datasources"] = {
         "description" => 'The datasource used by user manager',
         "driver_class_name" => 'com.mysql.jdbc.Driver',
         "url" => "jdbc:mysql://#{node['wso2am']['mysql_address']}:3306/regdb?autoReconnect=true",
-        "username" => 'database_username',
-        "password" => 'database_user',
+        "username" => "#{node['wso2am']['database_username']}",
+        "password" => "#{node['wso2am']['database_password']}",
         "jndi_config" => 'jdbc/WSO2REG_DB',
         "max_active" => '50',
         "max_wait" => '60000',
@@ -162,8 +165,8 @@ default["master_datasources"] = {
         "description" => 'The datasource used for getting statistics to API Manager',
         "driver_class_name" => 'com.mysql.jdbc.Driver',
         "url" => "jdbc:mysql://#{node['wso2am']['mysql_address']}:3306/statdb?autoReconnect=true",
-        "username" => 'database_username',
-        "password" => 'database_user',
+        "username" => "#{node['wso2am']['database_username']}",
+        "password" => "#{node['wso2am']['database_password']}",
         "jndi_config" => 'jdbc/WSO2AM_STATS_DB',
         "max_active" => '50',
         "max_wait" => '60000',
@@ -177,8 +180,8 @@ default["master_datasources"] = {
         "description" => 'The datasource used by user manager',
         "driver_class_name" => 'com.mysql.jdbc.Driver',
         "url" => "jdbc:mysql://#{node['wso2am']['mysql_address']}:3306/configdb?autoReconnect=true",
-        "username" => 'database_username',
-        "password" => 'database_user',
+        "username" => "#{node['wso2am']['database_username']}",
+        "password" => "#{node['wso2am']['database_password']}",
         "jndi_config" => 'jdbc/WSO2_CONFIG_DB',
         "max_active" => '50',
         "max_wait" => '60000',
@@ -200,7 +203,7 @@ default["clustering"] = {
     "wka" => {
         "members" => [{
 
-                          "hostname" => '10.0.2.15',
+                          "hostname" => "#{node['ipaddress']}",
                           "port" => 4000
                       }, {
 

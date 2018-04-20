@@ -48,20 +48,3 @@ end
 #including the templates changes
 include_recipe 'chef-wso2apim::apply_template'
 
-#start the wso2-apim server different profile exclude trafic manager
-bash "start_wso2_server " do
-  code <<-EOH
-  	cd #{bin_path}
-	./wso2server.sh start
-  EOH
-  only_if {node['wso2am']['product_profile'] != 'traficmanager'}
-end
-
-#start the wso2-apim server for trafic manager
-bash "start_trafficmanagger_wso2_server " do
-  code <<-EOH
-  	cd #{bin_path}
-	./wso2server.sh -Dprofile=traffic-manager start
-  EOH
-  only_if {node['wso2am']['product_profile'] == 'traficmanager'}
-end
