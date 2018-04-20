@@ -6,7 +6,8 @@ Chef is a powerful automation platform that transforms infrastructure into code.
 Many organizations, in distributing nodes between multiple servers,  encounter the challenge of how to do configurations that are consistently deployed. It is easy if it is to manage one to ten servers manually but it is difficult when managing several servers. There the role of Chef comes into play. With Chef, we are able to manage servers, whether it is 5 or 5,000 of them– by turning our infrastructure into code. Time-consuming activities such as manual patching, configuration updates and service installations for every server will no longer exist. Apart from those, our Infrastructure becomes flexible, version-able, human-readable, and testable.
 
 Here the  Chef cookbook includes the installation and  configurations for distributed setup with different profiles such as  distributed database configuration, enable clustering, standalone h2 database configurations, API manager configuration, axis2 configuration,registry confi, user management configurations for WSO2 API manager.
-![alt text](https://github.com/tharmini/chef-apim-1/tree/master/image/arcitecture.png)
+
+![architexture_of_chef](image/arcitecture.png)
 
 **An Overview of Chef Components**
 The Chef process consists of three core components that interact with one another: Chef server, actual servers called nodes, and Chef workstation.Here is a short summary of main parts of Chef architecture:
@@ -41,13 +42,13 @@ This document contains instructions specific to ubuntu 16.04 .
   1. Setup two instances
      - Chef workstation and Chef server can be a one instance because Chef workstation is accessing the Chef server(uploading cookbooks to the server by workstation).you can also use separate  instances to Chef server and  Chef workstation.But it is better when we use same instance for both because user.pem file and validation.pem file save on Chef-server instance.
        Set one  instances as Chef server as well as Chef workstation and other as Chef-client. You must be able to SSH between both the instances if bootstrapping the node from workstation.A bootstrap is a process that installs the chef-client on a target system so that it can run as a chef-client and communicate with a Chef server. Bootstraping through SSH is might not be possible in more than half of the cases, for security reasons.so we directly bootstraping the node  with chef server through the validation.pem file by downloading chef-client in node.
-            ![alt text](https://github.com/tharmini/chef-apim-1/tree/master/image/instance.png)
+            ![instance](image/instance.png)
  
   2. Setup Chef server, Chef client  and workstation and Perform the configurations part to run the product
      - First, we install the Chef Server and Chef workstation in one instance and do the configuration part for them. 
  Thereafter, we install the Chef client in another instance and configure both  chef server and chef node and also we configuration of Chef workstation and Chef node is carried out if bootstrapping the node from workstation.
  
- ![alt text](https://github.com/tharmini/chef-apim-1/tree/master/image/Chef-architexture.png)
+ ![architexture](image/Chef-architexture.png)
 
 ##### **2.1.Install and configure Chef Server** 
 We can install the Chef Server through this link 
