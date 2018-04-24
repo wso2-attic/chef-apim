@@ -1,15 +1,13 @@
-#  Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-#
+# Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 # WSO2 Inc. licenses this file to you under the Apache License,
-#  Version 2.0 (the "License"); you may not use this file except
+# Version 2.0 (the "License"); you may not use this file except
 # in compliance with the License.
-#      you may obtain a copy of the License at
-#   http://www.apache.org/licenses/LICENSE-2.0
-#
-#  Unless required by applicable law or agreed to in writing,
-#      software distributed under the License is distributed on an
-#  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-#  KIND, either express or implied. See the License for the
+# you may obtain a copy of the License at
+# http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations
 # under the License.
 
@@ -71,6 +69,7 @@ default['wso2am']['user_comment'] = 'WSO2 User'
 default['wso2am']['distributed setup'] = 'true'
 default['wso2am']['database_username'] = 'username'
 default['wso2am']['database_password'] = 'password'
+default['wso2am']['apply_gateway_specific_configurations'] = 'true'
 
 default["govregistry"] =
     {
@@ -85,6 +84,7 @@ default["govregistry"] =
         "targetPath" => '/_system/governance'
 
     }
+
 default["configregistry"] =
     {
         "name" => 'configregistry',
@@ -96,7 +96,6 @@ default["configregistry"] =
         "registryRoot" => '/',
         "path" => '/_system/config',
         "targetPath" => '/_system/config'
-
     }
 
 default["master_datasources"] = {
@@ -190,9 +189,8 @@ default["master_datasources"] = {
         "validation_query" => 'SELECT 1',
         "validation_interval" => '30000',
     },
-
 }
-default['wso2am']['apply_gateway_specific_configurations'] = 'true'
+
 default["clustering"] = {
     "enabled" => true,
     "membership_scheme" => 'wka',
@@ -219,8 +217,6 @@ default["wso2am"]["templates"] = {
         {"path" => 'repository/conf/registry.xml'},
         {"path" => 'repository/conf/datasources/master-datasources.xml'},
         {"path" => 'repository/conf/user-mgt.xml'},
-
-
     ],
     "keymanager" => [
         {"path" => 'repository/conf/carbon.xml'},
@@ -229,8 +225,6 @@ default["wso2am"]["templates"] = {
         {"path" => 'repository/conf/datasources/master-datasources.xml'},
         {"path" => 'repository/conf/user-mgt.xml'},
         {"path" => 'repository/conf/api-manager.xml'}
-
-
     ],
     "publisher" => [
         {"path" => 'repository/conf/carbon.xml'},
@@ -240,8 +234,6 @@ default["wso2am"]["templates"] = {
         {"path" => 'repository/conf/user-mgt.xml'},
         {"path" => 'repository/conf/jndi.properties'},
         {"path" => 'repository/conf/api-manager.xml'}
-
-
     ],
     "store" => [
         {"path" => 'repository/conf/carbon.xml'},
@@ -250,16 +242,12 @@ default["wso2am"]["templates"] = {
         {"path" => 'repository/conf/datasources/master-datasources.xml'},
         {"path" => 'repository/conf/user-mgt.xml'},
         {"path" => 'repository/conf/api-manager.xml'}
-
-
     ],
     "traficmanager" => [
         {"path" => 'repository/conf/carbon.xml'},
         {"path" => 'repository/conf/datasources/master-datasources.xml'},
         {"path" => 'repository/conf/user-mgt.xml'},
         {"path" => 'repository/conf/api-manager.xml'}
-
-
     ],
     "gateway-manager" => [
         {"path" => 'repository/conf/carbon.xml'},
@@ -268,8 +256,6 @@ default["wso2am"]["templates"] = {
         {"path" => 'repository/conf/api-manager.xml'},
         {"path" => 'repository/conf/axis2/axis2.xml'},
         {"path" => 'repository/conf/registry.xml'}
-
-
     ],
     "gateway-worker" => [
         {"path" => 'repository/conf/carbon.xml'},
@@ -278,14 +264,11 @@ default["wso2am"]["templates"] = {
         {"path" => 'repository/conf/api-manager.xml'},
         {"path" => 'repository/conf/axis2/axis2.xml'},
         {"path" => 'repository/conf/registry.xml'}
-
-
     ]
-
 }
+
 #delete files path for different profiles
 default["wso2am"]["delete_files"] = {
-
     "keymanager" => [
         {"path" => 'repository/deployment/server/webapps/am#sample#calculator#v1.war'},
         {"path" => 'repository/deployment/server/webapps/am#sample#pizzashack#v1.war'},
@@ -294,8 +277,6 @@ default["wso2am"]["delete_files"] = {
         {"path" => 'repository/deployment/server/webapps/api#am#store#v0.11.war'},
         {"path" => 'repository/deployment/server/webapps/micro-gateway#v0.9.war'},
         {"path" => 'repository/deployment/server/webapps/api#identity#consent-mgt#v1.0.war'}
-
-
     ],
     "publisher" => [
         {"path" => 'repository/deployment/server/webapps/am#sample#calculator#v1.war'},
@@ -305,8 +286,6 @@ default["wso2am"]["delete_files"] = {
         {"path" => 'repository/deployment/server/webapps/oauth2.war'},
         {"path" => 'repository/deployment/server/webapps/throttle#data#v1.war'},
         {"path" => 'repository/deployment/server/webapps/api#identity#consent-mgt#v1.0.war'}
-
-
     ],
     "store" => [
         {"path" => 'repository/deployment/server/webapps/am#sample#calculator#v1.war'},
@@ -318,7 +297,6 @@ default["wso2am"]["delete_files"] = {
         {"path" => 'repository/deployment/server/webapps/throttle#data#v1.war'},
         {"path" => 'repository/deployment/server/webapps/am#sample#pizzashack#v1.war'},
         {"path" => 'repository/deployment/server/webapps/api#identity#consent-mgt#v1.0.war'}
-
     ],
     "traficmanager" => [
         {"path" => 'repository/deployment/server/webapps/am#sample#calculator#v1.war'},
@@ -334,8 +312,6 @@ default["wso2am"]["delete_files"] = {
         {"path" => 'repository/conf/axis2/axis2.xml'},
         {"path" => 'repository/conf/registry.xml'},
         {"path" => 'repository/deployment/server/webapps/api#identity#consent-mgt#v1.0.war'}
-
-
     ],
     "gateway-manager" => [
         {"path" => 'repository/deployment/server/webapps/am#sample#calculator#v1.war'},
@@ -346,8 +322,6 @@ default["wso2am"]["delete_files"] = {
         {"path" => 'repository/deployment/server/webapps/oauth2.war'},
         {"path" => 'repository/deployment/server/webapps/throttle#data#v1.war'},
         {"path" => 'repository/deployment/server/webapps/api#identity#consent-mgt#v1.0.war'}
-
-
     ],
     "gateway-worker" => [
         {"path" => 'repository/deployment/server/webapps/am#sample#calculator#v1.war'},
@@ -360,20 +334,19 @@ default["wso2am"]["delete_files"] = {
         {"path" => 'repository/deployment/server/webapps/throttle#data#v1.war'},
         {"path" => 'repository/deployment/server/webapps/am#sample#pizzashack#v1.war'},
         {"path" => 'repository/deployment/server/webapps/api#identity#consent-mgt#v1.0.war'}
-
-
     ]
 
 }
+
 #jaggeryapps delete directory path
 default["wso2am"]["delete_directory"] = {
-
     "traficmanager" => [
         {"path" => 'repository/deployment/server/jaggeryapps/admin'},
         {"path" => 'repository/deployment/server/jaggeryapps/portal'},
         {"path" => 'repository/deployment/server/jaggeryapps/publisher'},
         {"path" => 'repository/deployment/server/jaggeryapps/store'}
-    ]}
+    ]
+}
 
 default["wso2am"]["worker"] = 'false'
 default["wso2am"]["broker"] = 'repository/conf'

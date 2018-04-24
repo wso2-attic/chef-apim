@@ -1,17 +1,16 @@
-#  Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-#
+# Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 # WSO2 Inc. licenses this file to you under the Apache License,
-#  Version 2.0 (the "License"); you may not use this file except
+# Version 2.0 (the "License"); you may not use this file except
 # in compliance with the License.
-#      you may obtain a copy of the License at
-#   http://www.apache.org/licenses/LICENSE-2.0
-#
-#  Unless required by applicable law or agreed to in writing,
-#      software distributed under the License is distributed on an
-#  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-#  KIND, either express or implied. See the License for the
+# you may obtain a copy of the License at
+# http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations
 # under the License.
+
 # Cookbook:: chef-wso2apim
 # Recipe:: java_installation
 # Copyright:: 2018, The Authors, All Rights Reserved.
@@ -23,9 +22,6 @@ wso2am_user = node['wso2am']['user']
 wso2am_group = node['wso2am']['group']
 extract_cache_path = node['wso2am']['java_extracted_path']
 java_home = node['wso2am']['java_home']
-
-java_home_path = "#{java_home}/bin"
-
 
 #creating new wso2am_group
 group "#{wso2am_group}" do
@@ -80,5 +76,6 @@ ruby_block 'set JAVA_HOME in /etc/environment' do
   end
   only_if {node['wso2am']['set_etc_environment']}
 end
+
 
 

@@ -1,21 +1,19 @@
-#  Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-#
+# Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 # WSO2 Inc. licenses this file to you under the Apache License,
-#  Version 2.0 (the "License"); you may not use this file except
+# Version 2.0 (the "License"); you may not use this file except
 # in compliance with the License.
-#      you may obtain a copy of the License at
-#   http://www.apache.org/licenses/LICENSE-2.0
-#
-#  Unless required by applicable law or agreed to in writing,
-#      software distributed under the License is distributed on an
-#  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-#  KIND, either express or implied. See the License for the
+# you may obtain a copy of the License at
+# http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations
 # under the License.
+
 # Cookbook:: chef-wso2apim
 # Recipe:: apply_template
 # # Copyright:: 2018, The Authors, All Rights Reserved.
-
 
 wso2am_dir_name = "#{node['wso2am']['product_name']}-#{node['wso2am']['product_version']}"
 bin_path = "#{node['wso2am']['wso2api_extracted_path']}/#{wso2am_dir_name}/bin"
@@ -28,12 +26,9 @@ if node["wso2am"]["product_profile"] == "default"
       owner node["wso2am"]["user"]
       group node["wso2am"]["group"]
       mode 0644
-
-      variables(
-      )
+      variables()
       notifies :run, 'execute[wso2amservice_stop]', :delayed
       notifies :run, 'execute[wso2amservice_start]', :delayed
-
     end
   end
 end
@@ -46,12 +41,9 @@ if node["wso2am"]["product_profile"] == "keymanager"
       owner node["wso2am"]["user"]
       group node["wso2am"]["group"]
       mode 0644
-
-      variables(
-      )
+      variables()
       notifies :run, 'execute[wso2amservice_stop]', :delayed
       notifies :run, 'execute[wso2amservice_start]', :delayed
-
     end
   end
   node["wso2am"]["delete_files"]["keymanager"].each do |files|
@@ -60,9 +52,9 @@ if node["wso2am"]["product_profile"] == "keymanager"
       group node["wso2am"]["group"]
       mode 0644
       action :delete
-
+      notifies :run, 'execute[wso2amservice_stop]', :delayed
+      notifies :run, 'execute[wso2amservice_start]', :delayed
     end
-
   end
 end
 
@@ -74,12 +66,9 @@ if node["wso2am"]["product_profile"] == "publisher"
       owner node["wso2am"]["user"]
       group node["wso2am"]["group"]
       mode 0644
-
-      variables(
-      )
+      variables()
       notifies :run, 'execute[wso2amservice_stop]', :delayed
       notifies :run, 'execute[wso2amservice_start]', :delayed
-
     end
   end
   node["wso2am"]["delete_files"]["publisher"].each do |files|
@@ -88,8 +77,8 @@ if node["wso2am"]["product_profile"] == "publisher"
       group node["wso2am"]["group"]
       mode 0644
       action :delete
-
-
+      notifies :run, 'execute[wso2amservice_stop]', :delayed
+      notifies :run, 'execute[wso2amservice_start]', :delayed
     end
   end
 end
@@ -102,12 +91,9 @@ if node["wso2am"]["product_profile"] == "traficmanager"
       owner node["wso2am"]["user"]
       group node["wso2am"]["group"]
       mode 0644
-
-      variables(
-      )
+      variables()
       notifies :run, 'execute[wso2amservice2_stop]', :delayed
       notifies :run, 'execute[wso2amservice2_start]', :delayed
-
     end
   end
   node["wso2am"]["delete_files"]["traficmanager"].each do |files|
@@ -116,8 +102,8 @@ if node["wso2am"]["product_profile"] == "traficmanager"
       group node["wso2am"]["group"]
       mode 0644
       action :delete
-
-
+      notifies :run, 'execute[wso2amservice2_stop]', :delayed
+      notifies :run, 'execute[wso2amservice2_start]', :delayed
     end
   end
   node["wso2am"]["delete_directory"]["traficmanager"].each do |directory|
@@ -127,12 +113,10 @@ if node["wso2am"]["product_profile"] == "traficmanager"
       mode 0644
       recursive true
       action :delete
-
-
+      notifies :run, 'execute[wso2amservice2_stop]', :delayed
+      notifies :run, 'execute[wso2amservice2_start]', :delayed
     end
   end
-
-
 end
 
 #apply templates for the store profile
@@ -143,15 +127,10 @@ if node["wso2am"]["product_profile"] == "store"
       owner node["wso2am"]["user"]
       group node["wso2am"]["group"]
       mode 0644
-
-      variables(
-      )
+      variables()
       notifies :run, 'execute[wso2amservice_stop]', :delayed
       notifies :run, 'execute[wso2amservice_start]', :delayed
-
-
     end
-
   end
   node["wso2am"]["delete_files"]["store"].each do |files|
     file "#{node['wso2am']['wso2api_extracted_path']}/#{node['wso2am']['product_name']}-#{node['wso2am']['product_version']}/#{files["path"]}" do
@@ -159,13 +138,10 @@ if node["wso2am"]["product_profile"] == "store"
       group node["wso2am"]["group"]
       mode 0644
       action :delete
-
-
+      notifies :run, 'execute[wso2amservice_stop]', :delayed
+      notifies :run, 'execute[wso2amservice_start]', :delayed
     end
-
-
   end
-
 end
 
 #apply templates for the gateway-manager profile
@@ -176,14 +152,10 @@ if node["wso2am"]["product_profile"] == "gateway-manager"
       owner node["wso2am"]["user"]
       group node["wso2am"]["group"]
       mode 0644
-
-      variables(
-      )
+      variables()
       notifies :run, 'execute[wso2amservice_stop]', :delayed
       notifies :run, 'execute[wso2amservice_start]', :delayed
-
     end
-
   end
   node["wso2am"]["delete_files"]["gateway-manager"].each do |files|
     file "#{node['wso2am']['wso2api_extracted_path']}/#{node['wso2am']['product_name']}-#{node['wso2am']['product_version']}/#{files["path"]}" do
@@ -191,12 +163,10 @@ if node["wso2am"]["product_profile"] == "gateway-manager"
       group node["wso2am"]["group"]
       mode 0644
       action :delete
-
-
+      notifies :run, 'execute[wso2amservice_stop]', :delayed
+      notifies :run, 'execute[wso2amservice_start]', :delayed
     end
-
   end
-
 end
 
 #apply templates for the gateway-worker profile
@@ -222,11 +192,10 @@ if node["wso2am"]["product_profile"] == "gateway-worker"
       group node["wso2am"]["group"]
       mode 0644
       action :delete
-
+      notifies :run, 'execute[wso2amservice_stop]', :delayed
+      notifies :run, 'execute[wso2amservice_start]', :delayed
     end
-
   end
-
 end
 
 #delete the WebSocketInboundEndpoint.xml file
