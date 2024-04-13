@@ -1,5 +1,5 @@
 ## WSO2 API Manager 2.2.0 
-## Chef Cookbook
+## [DEPRECATED] Chef Cookbook
 
 Chef is a powerful automation platform that transforms infrastructure into code.The Chef Server acts as a hub for configuration data. The Chef Server stores cookbooks, the policies that are applied to nodes, and metadata that describes each registered node that is being managed by Chef. 
 
